@@ -3,14 +3,14 @@
         Welcome
     </x-slot:title>
     <div class="max-w-2xl mx-auto">
+        @foreach ($blabs as $blab )            
         <div class="card bg-base-100 shadow mt-8">
             <div class="card-body">
-                <div>
-                    <h1 class="text-3xl font-bold">Welcome to Blabber!</h1>
-                    <p class="mt-4 text-base-content/60">This is your brand new Laravel application. Time to make it
-                        sing (or blab)!</p>
-                </div>
+                <div class="font-semibold">{{ $blab['author'] }}</div>
+                <div class="mt-1">{{ $blab['message'] }}</div>
+                <div class="text-sm text-gray-500 mt-2">{{ $blab['time'] }}</div>
             </div>
         </div>
+        @endforeach
     </div>
 </x-layout>
