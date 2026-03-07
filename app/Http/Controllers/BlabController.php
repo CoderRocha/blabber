@@ -33,7 +33,19 @@ class BlabController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ], [
+            'message.required' => 'Please write something to blab!',
+            'message.max' => 'Blabs must be 255 characters or less.',
+        ]);
+
+        Blab::create([
+            'message' => $validated['message'],
+            'user_id' => null,
+        ]);
+
+        return redirect('/')->with('success', 'Your blab has been posted!');
     }
 
     /**
