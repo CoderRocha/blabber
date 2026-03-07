@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blab;
 use Illuminate\Http\Request;
 
 class BlabController extends Controller
@@ -11,25 +12,12 @@ class BlabController extends Controller
      */
     public function index()
     {
-        $blabs = [
-            [
-                'author' => 'Jane Doe',
-                'message' => 'Just deployed my first Laravel app! 🚀',
-                'time' => '5 minutes ago'
-            ],
-            [
-                'author' => 'John Smith',
-                'message' => 'Laravel makes web development fun again!',
-                'time' => '1 hour ago'
-            ],
-            [
-                'author' => 'Alice Johnson',
-                'message' => 'Working on something cool with Blabber...',
-                'time' => '3 hours ago'
-            ]
-        ];
-
-        return view('home', ['blabs' => $blabs]);
+            $blabs = Blab::with('user')
+            ->latest()
+            ->take(25)
+            ->get();
+            
+            return view('home', ['blabs' => $blabs]);
     }
 
     /**
