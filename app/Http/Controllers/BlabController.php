@@ -44,7 +44,7 @@ class BlabController extends Controller
 
         $request->user()->blabs()->create($validated);
 
-        return redirect('/')->with('success', 'Your blab has been posted!');
+        return redirect('/')->with('success', "You've blabbed!");
     }
 
     /**
