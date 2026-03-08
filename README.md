@@ -1,59 +1,235 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Blabber
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O Blabber é uma micro rede-social construída em Laravel, onde as pessoas podem publicar, editar e apagar mensagens curtas (“blabs”) que são exibidas em um feed.
 
-## About Laravel
+## Índice
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Stack](#stack)
+- [Rotas](#rotas)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Instalação](#instalação)
+- [Executando o Projeto](#executando-o-projeto)
+- [Configurações](#configurações)
+- [Autor](#autor)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Sobre o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O **Blabber** é uma pequena micro rede-social de mensagens curtas, focado em mostrar os “blabs” mais recentes dos usuários.  
+Os usuários podem se registrar e compartilhar textos de até 255 caracteres, enquanto visitantes conseguem visualizar o feed sem poder postar um "blab".
 
-## Learning Laravel
+## Funcionalidades
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Feed de blabs**
+  - Listagem dos últimos blabs em ordem crescente.
+  - Exibição do autor, avatar e timestamp do "blab".
+  - Indicação visual quando um blab foi editado.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Autenticação de usuários**
+  - Registro com nome, e‑mail e senha.
+  - Login por e‑mail/senha com opção de “Remember Me”.
 
-## Laravel Sponsors
+- **Criação e edição de blabs**
+  - Usuários autenticados podem criar novos blabs com até 255 caracteres.
+  - Validação de formulário com mensagens de erro amigáveis.
+  - Edição de blabs próprios do usuário.
+  - Exclusão de blabs próprios.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **User Interface**
+  - Layout responsivo baseado em Blade + Tailwind CSS.
+  - Tema visual personalizado sobre DaisyUI (`laravelBlabber`) com ajustes de cores, botões, cards e toasts.
+  - Toasts de feedback para ações de sucesso (criar, atualizar, apagar, login/logout, etc.).
 
-### Premium Partners
+## Stack
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **Backend**
+  - **PHP** 8
+  - **Laravel Framework** 12
 
-## Contributing
+- **Frontend**
+  - **Vite 7**
+  - **Blade**
+  - **Tailwind CSS**
+  - **DaisyUI**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Build**
+  - **Node.js + npm**
+  - **Composer** 
 
-## Code of Conduct
+- **Infraestrutura**
+  - **Banco de dados SQL**
+  - **Sessões** e **filas**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Rotas
 
-## Security Vulnerabilities
+Todas as rotas abaixo retornam apenas a view, sendo elas:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Feed e blabs**
+  - **GET `/`**  
+    Exibe a página inicial com o feed dos últimos blabs (`BlabController@index`).
 
-## License
+  - **POST `/blabs`** (auth)
+    Cria um novo blab associado ao usuário logado, com validação para o campo `message` (`BlabController@store`).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+  - **GET `/blabs/{blab}/edit`** (auth + policy)
+    Exibe o formulário de edição para um blab existente (apenas se o usuário atual for o autor) (`BlabController@edit`).
+
+  - **PUT `/blabs/{blab}`** (auth + policy)
+    Atualiza o texto de um blab existente, respeitando as mesmas regras de validação (`BlabController@update`).
+
+  - **DELETE `/blabs/{blab}`** (auth + policy)
+    Deleta um blab existente (apenas para o autor) (`BlabController@destroy`).
+
+- **Autenticação**
+  - **GET `/register`** (guest)
+    Exibe o formulário de registro (`resources/views/auth/register.blade.php`).
+
+  - **POST `/register`** (guest)
+    Cria um novo usuário com `name`, `email` e `password`, faz login automático e redireciona para o feed (`Auth\Register`).
+
+  - **GET `/login`** (guest)
+    Exibe o formulário de login (`resources/views/auth/login.blade.php`).
+
+  - **POST `/login`** (guest)
+    Autentica o usuário usando as credenciais (`email`, `password`) com suporte a “Remember Me” (`Auth\Login`).
+
+  - **POST `/logout`** (auth)
+    Encerra a sessão atual, invalida e regenera o token CSRF, redirecionando de volta ao feed (`Auth\Logout` invocável).
+
+## Estrutura do Projeto
+
+- **`app/`**
+  - **`Http/Controllers/BlabController.php`**.
+  - **`Http/Controllers/Auth/Login.php`**.
+  - **`Http/Controllers/Auth/Register.php`**.
+  - **`Http/Controllers/Auth/Logout.php`**.
+  - **`Models/User.php`**.
+  - **`Models/Blab.php`**.
+  - **`Policies/BlabPolicy.php`**.
+
+- **`routes/`**
+  - **`web.php`**.
+
+- **`resources/views/`**
+  - **`home.blade.php`**.
+  - **`blabs/edit.blade.php`**.
+  - **`auth/login.blade.php`** e **`auth/register.blade.php`**.
+  - **`components/layout.blade.php`**.
+  - **`components/blab.blade.php`**.
+
+- **`resources/css/app.css`**
+
+- **`resources/js/`**
+  - **`app.js`**.
+  - **`bootstrap.js`**.
+
+- **`database/`**
+  - **`migrations/2026_03_03_004200_create_blabs_table.php`** (migration da tabela `blabs` : `user_id`, `message`, timestamps).
+  - **`seeders/BlabSeeder.php`** (cria usuários de exemplo e blabs de demonstração).
+
+- **Build**
+  - **`composer.json`**.
+  - **`package.json`**.
+  - **`vite.config.js`**.
+
+## Instalação
+
+Pré‑requisitos:
+
+- **PHP** 8+
+- **Composer**
+- **Banco de dados** (ex.: MySQL) com um database criado (`blabber`)
+- **Node.js + npm**
+
+No diretório do projeto:
+
+1. **Instalar packages do PHP**
+
+   ```bash
+   composer install
+   ```
+
+2. **Criar o arquivo `.env` a partir do exemplo**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Gerar chave da aplicação**
+
+   ```bash
+   php artisan key:generate
+   ```
+
+4. **Configurar as variáveis de ambiente de banco de dados no `.env`**
+
+   - `DB_CONNECTION`
+   - `DB_HOST`
+   - `DB_PORT`
+   - `DB_DATABASE`
+   - `DB_USERNAME`
+   - `DB_PASSWORD`
+
+5. **Rodar as migrations (e os seeders)**
+
+   ```bash
+   php artisan migrate
+   # opcional: php artisan db:seed --class=BlabSeeder
+   ```
+
+6. **Instalar packages NPM**
+
+   ```bash
+   npm install
+   ```
+
+## Executando o Projeto
+
+Para rodar o projeto, simplesmente use o comando:
+
+  ```bash
+  composer run dev
+  ```
+
+  Ele executa em paralelo:
+
+  - `php artisan serve` (servidor Laravel)
+  - `php artisan queue:listen --tries=1` (worker)
+  - `npm run dev` (vite)
+
+  Após rodar o comando, acesse a aplicação em `http://localhost:8000`.
+
+## Configurações
+
+As principais variáveis estão em `.env.example`, tais como:
+
+- **Aplicação**
+  - `APP_NAME`
+  - `APP_ENV`
+  - `APP_DEBUG`
+  - `APP_URL`
+
+- **Banco de dados**
+  - `DB_CONNECTION` (ex.: `mysql`)
+  - `DB_HOST`
+  - `DB_PORT`
+  - `DB_DATABASE` (por padrão use: `blabber`)
+  - `DB_USERNAME`
+  - `DB_PASSWORD`
+
+- **Sessões, cache e filas**
+  - `SESSION_DRIVER=database`
+  - `QUEUE_CONNECTION=database`
+  - `CACHE_STORE=database`
+
+Para acessar a aplicação localmente, basta configurar as variáveis de **banco de dados** e rodar o projeto.
+
+## Autor
+
+**Guilherme Rocha (CoderRocha)**
+
+- GitHub: [CoderRocha](https://github.com/coderrocha)
+- LinkedIn: [Guilherme Rocha](https://www.linkedin.com/in/guilherme-rocha-da-silva)
+
+---
