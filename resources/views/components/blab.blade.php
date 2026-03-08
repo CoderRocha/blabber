@@ -1,13 +1,13 @@
 
 @props(['blab'])
 
-<div class="card bg-base-100 shadow">
+<div class="card bg-base-100">
     <div class="card-body">
         <div class="flex space-x-3">
             @if($blab->user)
                 <div class="avatar">
                     <div class="size-10 rounded-full">
-                        <img src="https://avatars.laravel.cloud/{{ urlencode($blab->user->email) }}"
+                        <img src="https://avatars.laravel.cloud/{{ urlencode($blab->user->email) }}?vibe=ocean"
                              alt="{{ $blab->user->name }}'s avatar"
                              class="rounded-full" />
                     </div>
@@ -34,23 +34,18 @@
                     @endif
                 </div>
 
+                @can('update', $blab)
                 <div class="flex gap-1">
-                        <a href="/blabs/{{ $blab->id }}/edit" class="btn btn-ghost btn-xs">
-                            Edit
-                        </a>
-                        <form method="POST" action="/blabs/{{ $blab->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                onclick="return confirm('Are you sure you want to delete this blab?')"
-                                class="btn btn-ghost btn-xs text-error">
-                                Delete
-                            </button>
+                        <a href="/blabs/{{ $blab->id }}/edit" class="btn btn-ghost btn-xs"> Edit </a>
+                        <form method="POST" action="/blabs/{{ $blab->id }}"> @csrf @method('DELETE') <button
+                        type="submit" onclick="return confirm('Are you sure you want to delete this blab?')"
+                        class="btn btn-ghost btn-xs text-error"> Delete </button>
                         </form>
                     </div>
+                    @endcan
                 </div>
 
-                <p class="mt-1">
+                <p class="mt-1 break-words">
                     {{ $blab->message }}
                 </p>
             </div>

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blab;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class BlabController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -40,10 +42,7 @@ class BlabController extends Controller
             'message.max' => 'Blabs must be 255 characters or less.',
         ]);
 
-        Blab::create([
-            'message' => $validated['message'],
-            'user_id' => null,
-        ]);
+        auth()->user()->blabs()->create($validated);
 
         return redirect('/')->with('success', 'Your blab has been posted!');
     }
@@ -61,6 +60,8 @@ class BlabController extends Controller
      */
     public function edit(Blab $blab)
     {
+        $this->authorize('update', $blab);
+
         return view('blabs.edit', compact('blab'));
     }
 
@@ -69,6 +70,8 @@ class BlabController extends Controller
      */
     public function update(Request $request, Blab $blab)
     {
+        $this->authorize('update', $blab);
+
         $validated = $request->validate([
         'message' => 'required|string|max:255',
     ]);
@@ -83,6 +86,7 @@ class BlabController extends Controller
      */
     public function destroy(Blab $blab)
     {
+        $this->authorize('update', $blab);
     
     $blab->delete();
 

@@ -37,7 +37,7 @@ class BlabPolicy
      */
     public function update(User $user, Blab $blab): bool
     {
-        return false;
+        return $blab->user()->is($user);
     }
 
     /**
