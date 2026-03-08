@@ -42,7 +42,7 @@ class BlabController extends Controller
             'message.max' => 'Blabs must be 255 characters or less.',
         ]);
 
-        auth()->user()->blabs()->create($validated);
+        $request->user()->blabs()->create($validated);
 
         return redirect('/')->with('success', 'Your blab has been posted!');
     }
