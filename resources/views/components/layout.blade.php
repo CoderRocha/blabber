@@ -6,6 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ isset($title) ? $title . ' - Blabber' : 'Blabber' }}</title>
+    <meta property="og:title" content="{{ isset($title) ? $title . ' - Blabber' : 'Blabber' }}" />
+    <meta property="og:description" content="Blab about something!" />
+    <meta property="og:image" content="{{ url('/images/og.jpeg') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url()->current() }}" />
     <link rel="preconnect" href="<https://fonts.bunny.net>">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
@@ -15,7 +20,8 @@
 
 <body class="min-h-screen flex flex-col bg-base-200 font-sans">
     <nav class="navbar bg-base-100">
-        <div class="navbar-start">
+        <div class="navbar-start"></div>
+        <div class="navbar-center">
             <a href="/" class="flex items-center gap-2 text-xl font-semibold px-2">
                 <img src="/images/icon.svg" alt="Blabber" class="h-6 w-6" />
                 Blabber
