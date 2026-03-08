@@ -22,11 +22,32 @@
                 </div>
             @endif
 
-            <div class="min-w-0">
+            <div class="min-w-0 flex-1">
+                <div class="flex justify-between w-full">
                 <div class="flex items-center gap-1">
                     <span class="text-sm font-semibold">{{ $blab->user ? $blab->user->name : 'Anonymous' }}</span>
                     <span class="text-base-content/60">·</span>
                     <span class="text-sm text-base-content/60">{{ $blab->created_at->diffForHumans() }}</span>
+                    @if ($blab->updated_at->gt($blab->created_at->addSeconds(1)))
+                        <span class="text-base-content/60">·</span>
+                        <span class="text-sm text-base-content/60 italic">edited</span>
+                    @endif
+                </div>
+
+                <div class="flex gap-1">
+                        <a href="/blabs/{{ $blab->id }}/edit" class="btn btn-ghost btn-xs">
+                            Edit
+                        </a>
+                        <form method="POST" action="/blabs/{{ $blab->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                onclick="return confirm('Are you sure you want to delete this blab?')"
+                                class="btn btn-ghost btn-xs text-error">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <p class="mt-1">
