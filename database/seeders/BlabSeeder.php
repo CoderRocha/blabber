@@ -3,14 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Blab;
 use Illuminate\Database\Seeder;
 
 class BlabSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create a few sample users if they don't exist
         $users = User::count() < 3
                     ? collect([
                         User::create([
@@ -31,7 +29,6 @@ class BlabSeeder extends Seeder
                     ])
                     : User::take(3)->get();
 
-        // Sample blabs
         $blabs = [
             'Just discovered Laravel - where has this been all my life? 🚀',
             'Building something cool with Blabber today!',
@@ -41,7 +38,6 @@ class BlabSeeder extends Seeder
             'Friday deploys with Laravel? No problem! 😎',
         ];
 
-        // Create blabs for random users
         foreach ($blabs as $message) {
             $users->random()->blabs()->create([
                 'message' => $message,
