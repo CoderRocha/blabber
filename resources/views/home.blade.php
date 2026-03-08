@@ -4,7 +4,7 @@
     </x-slot:title>
 
     <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold mt-8">Latest Blabs</h1>
+        <h1 style="text-align: center;" class="text-3xl font-bold mt-8">Latest Blabs</h1>
 
     @auth
     <div class="card bg-base-100 shadow mt-8">
