@@ -34,7 +34,7 @@ class BlabSeeder extends Seeder
         // Sample blabs
         $blabs = [
             'Just discovered Laravel - where has this been all my life? 🚀',
-            'Building something cool with Chirper today!',
+            'Building something cool with Blabber today!',
             'Laravel\'s Eloquent ORM is pure magic ✨',
             'Deployed my first app with Laravel Cloud. So smooth!',
             'Who else is loving Blade components?',
